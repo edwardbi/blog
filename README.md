@@ -2,7 +2,7 @@
 
 This Blog records my projects and code demos when learning Deep learning, if you find its interesting and would like to have a 
 chat with me, please contact me at edward920210@126.com. If you are Chinese, I am also doing blogs in Chinese, refer to 
-[here](www.cnblogs.com/edwardbi/) for my Chinese blogs. 
+[here](https://www.cnblogs.com/edwardbi/) for my Chinese blogs. 
 
 ##Table of Content
 
