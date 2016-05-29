@@ -7,3 +7,4 @@ chat with me, please contact me at edward920210@126.com. If you are Chinese, I a
 ##Table of Content
 
 1. 2016-05-22: [Tensorflow Implementation of CBOW model](https://github.com/edwardbi/blog/blob/master/2016-05/CBOW.md)
+2. 2016-05-29: [Gensim and Tensorflow Implementation of DM model](https://github.com/edwardbi/blog/blob/master/2016-05/DM.md)
