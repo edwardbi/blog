@@ -10,7 +10,7 @@ dimension from the word vectors. The purpose of such model are two fold:
 ## Brief Introduction of Paragraph Models
 Similar to Word2Vec, there are two variants of the model of paragraph models, they are the PV-DM and the PV-DBOW model. The PV-DM model
 is based off the CBOW model while the PV-DBOW model is assemble the Skip-Gram model. Both structures are shown in graph below:
-![PV-DM](http://img1.tuicool.com/vMZvuy.png!web)![PV-DBOW](http://img2.tuicool.com/FvQJfq.png!web)<br>
+</br>![PV-DM](http://img1.tuicool.com/vMZvuy.png!web)![PV-DBOW](http://img2.tuicool.com/FvQJfq.png!web)<br>
 
 The models can be trained with the same methods used in Word2Vec and recently, it is used for classifying emotional responses of the 
 IMDb movie rating dataset. 
