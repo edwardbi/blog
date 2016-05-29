@@ -107,7 +107,7 @@ for i in sims:
     count += 1
 </code></pre>
 The results of a random example is shown below:
-</p>
+<p>
 >8136
 >('TARGET', ['Maldonado', 'holds', 'two', 'notable', 'knockout', 'victories', 'over', 'Maiquel', 'Falc\xc3\xa3o'])
 >('SEN_8152', ': ', ['Maldonado', 'was', 'expected', 'to', 'face', 'Aaron', 'Rosa', 'at'])
