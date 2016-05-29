@@ -107,7 +107,7 @@ for i in sims:
     count += 1
 </code></pre>
 The results of a random example is shown below:
-<p>
+
 >8136
 >('TARGET', ['Maldonado', 'holds', 'two', 'notable', 'knockout', 'victories', 'over', 'Maiquel', 'Falc\xc3\xa3o'])
 >('SEN_8152', ': ', ['Maldonado', 'was', 'expected', 'to', 'face', 'Aaron', 'Rosa', 'at'])
@@ -119,7 +119,8 @@ The results of a random example is shown below:
 >('SEN_10981', ': ', ['Morrison', 'was', 'knocked', 'out', 'in', 'the', 'sixth', 'round'])
 >('SEN_6295', ': ', ['Australia', 'and', 'New', 'Zealand'])
 >('SEN_7465', ': ', ['1434', 'CE', 'called', 'QutbulMadar', 'and', 'is', 'centered', 'around', 'his', 'shrine', 'dargah', 'at', 'Makanpur', 'Kanpur', 'district', 'Uttar', 'Pradesh'])
-</p>
+
+
 </br>
 It is interesting to see that the target sentence mentioned Maldonado, while the most closed sentence is also about the same person. 
 Moreover, the second-most close one is about notable victories. Consequently, we know that the paragraph vector is working to some 
