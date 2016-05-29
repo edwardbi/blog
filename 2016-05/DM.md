@@ -25,7 +25,7 @@ Firstly, we may use the Gensim deep learning library to have a taste of this mod
 doing so. The Doc2Vec library is responsible for generating the paragraph vectors. However, different from the word vectors, the blog 
 for training this model is not clearly documented to the level of the Word2Vec model's blog. I am going to present my code for doing so, 
 let's get started!
-<p><code>
+<pre><code>
 from gensim.models import doc2vec
 from collections import namedtuple
 
@@ -84,9 +84,9 @@ for epoch in range(10):
 
 # Finally, we save the model
 model.save('my_model.doc2vec')
-</code></p>
+</code></pre>
 Afterwards, we need a way to test the model, here is the code for it:
-<p><code>
+<pre><code>
 import random
 import numpy as np
 import string
@@ -105,8 +105,9 @@ for i in sims:
     pid = int(string.replace(i[0], "SEN_", ""))
     print(i[0],": ", all_docs[pid].words)
     count += 1
-</code></p>
+</code></pre>
 The results of a random example is shown below:
+</p>
 >8136
 >('TARGET', ['Maldonado', 'holds', 'two', 'notable', 'knockout', 'victories', 'over', 'Maiquel', 'Falc\xc3\xa3o'])
 >('SEN_8152', ': ', ['Maldonado', 'was', 'expected', 'to', 'face', 'Aaron', 'Rosa', 'at'])
@@ -118,6 +119,7 @@ The results of a random example is shown below:
 >('SEN_10981', ': ', ['Morrison', 'was', 'knocked', 'out', 'in', 'the', 'sixth', 'round'])
 >('SEN_6295', ': ', ['Australia', 'and', 'New', 'Zealand'])
 >('SEN_7465', ': ', ['1434', 'CE', 'called', 'QutbulMadar', 'and', 'is', 'centered', 'around', 'his', 'shrine', 'dargah', 'at', 'Makanpur', 'Kanpur', 'district', 'Uttar', 'Pradesh'])
+</p>
 </br>
 It is interesting to see that the target sentence mentioned Maldonado, while the most closed sentence is also about the same person. 
 Moreover, the second-most close one is about notable victories. Consequently, we know that the paragraph vector is working to some 
@@ -126,7 +128,7 @@ Now, let's try to look into the actual structure of the DM model and use Tensorf
 First of all, I use the wikipedia training corpus to train the model, thus, the same dataset pre-processing and formatting codes are 
 used directly from the Gensim model presented above. Afterwards, the build_data function shall be modified because this time, the training 
 corpus is not a text file full of words. There file are currently arranged in the format of namedtuple. The code for doing so is shown below: 
-<p><code>
+<pre><code>
 # Function taking in the input data and a minimum word frequence
 def build_dataset(input_data, min_cut_freq):
   # Firstly, we collect the words into a list for the counter function
@@ -166,10 +168,10 @@ def build_dataset(input_data, min_cut_freq):
   count[0][1] = unk_count
   reverse_dictionary = dict(zip(dictionary.values(), dictionary.keys()))
   return data, count, dictionary, reverse_dictionary
-</code></p>
+</code></pre>
 We also need to modify the generate_batch function. We would like to have the data generated from the function above as input, the output 
 should be exactly the same as CBOW model except with one more label: the sentence the window belongs to. Below is the code for doing so: 
-<p><code>
+<pre><code>
 word_index = 0
 sentence_index = 0
 
@@ -214,9 +216,9 @@ def generate_DM_batch(batch_size, num_skips, skip_window):
         else: # increase the word_index by 1
             word_index += 1 
     return batch, labels, para_labels
-</code></p>
+</code></pre>
 The structure of the model is given in the code snippet below:
-<p><code>
+<pre><code>
 #paragraph vector place holder, same dimension as the train_labels placeholder
 train_para_labels = tf.placeholder(tf.int32,shape=[batch_size, 1])
 
@@ -239,7 +241,7 @@ loss = tf.reduce_mean(tf.nn.nce_loss(nce_weights, nce_biases, reduced_embed, tra
 # In a session, you should call the generate_DM_batch function
 batch_inputs, batch_labels, batch_para_labels = generate_DM_batch(batch_size, num_skips, skip_window)
 feed_dict = {train_inputs : batch_inputs, train_labels : batch_labels, train_para_labels: batch_para_labels}
-</code></p>
+</code></pre>
 Above is the code segment that is different from the CBOW model discussed in [previous blog](https://github.com/edwardbi/blog/blob/master/2016-05/CBOW.md) 
 I strongly encourage you to test it out if you have Tensorflow installed to your programming enviorment, and the result is currently really bad, I am working 
 on to incorporate decreasing learning rate or shuffle of sentences to see if a better result can be obtained. 
