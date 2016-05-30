@@ -245,4 +245,4 @@ feed_dict = {train_inputs : batch_inputs, train_labels : batch_labels, train_par
 </code></pre>
 Above is the code segment that is different from the CBOW model discussed in [previous blog](https://github.com/edwardbi/blog/blob/master/2016-05/CBOW.md) 
 I strongly encourage you to test it out if you have Tensorflow installed to your programming enviorment, and the result is currently really bad, I am working 
-on to incorporate decreasing learning rate or shuffle of sentences to see if a better result can be obtained. 
+on to incorporate decreasing learning rate or shuffle of sentences to see if a better result can be obtained. Click [here](https://github.com/edwardbi/DeepLearningModels/tree/master/DM) for the code.
