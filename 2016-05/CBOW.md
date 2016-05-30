@@ -166,4 +166,4 @@ with graph.as_default():
                      num_sampled, vocabulary_size))
 </code></pre>
 Finally, at the session section, replace the generate_batch function with the generate_CBOW_batch function defined above, the CBOW model 
-is achieved. For detail of the model, please refer to my opensourced project CBOW at [here](https://github.com/edwardbi/CBOW)
+is achieved. For detail of the model, please refer to my opensourced project CBOW at [here](https://github.com/edwardbi/DeepLearningModels/tree/master/CBOW)
