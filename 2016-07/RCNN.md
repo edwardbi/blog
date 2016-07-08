@@ -76,5 +76,41 @@ def create_alexnet(num_classes, restore=True):
 </code></pre>
 The variable restore is default to True, which means the system will restore all variables of the saved model to fit to the model. However, when a pre-trained model is loaded for fine-tunning, we set the restore to False, thus, only the last layer, where we have the restore=restore code, is not taking the model variable. This way, only the last fully connected layer is required to learn its new parameters from randomly init variables. Finally, how do we take the feature vectors from the system? There are many ways. One way is to get the last fully connected layer before the softmax's name to get its unique weights and biases. An much easier way will be using the same model but delete the softmax layer as well as the dropout layer before it. </br>
 Knowing the tricks with the backbone model of the RCNN, another question is how can we gennerate image segment proposals? Luckly, we may use the selectivesearch library of python to achieve this task. With pip install selectivesearch, we can directly import the selectivesearch function to achieve the process. <br>
-After the image proposal is made, another question of important is how do we define the IOU to decide which image segment is taken as the foreground and which is considered as background. The idea is relatively simple: if we know there is intersection between two regions, after randing the rectanglur vertices we can always find the area of intersection. And the formula for calculating the intersetion rate is 
+After the image proposal is made, another question of important is how do we define the IOU to decide which image segment is taken as the foreground and which is considered as background. The idea is relatively simple: if we know there is intersection between two regions, after randing the rectanglur vertices we can always find the area of intersection. And the formula for calculating the intersetion rate is defined to be the area of intersection devide by the area of union. To achieve this logic, we first decide on the situations where intersection regions may happen. The entire logic of IOU is given by the code segments below:
+<pre><code>
+# IOU Part 1, intersection detection plus intersection area calculation
+def if_intersection(xmin_a, xmax_a, ymin_a, ymax_a, xmin_b, xmax_b, ymin_b, ymax_b):
+    if_intersect = False
+    if xmin_a < xmax_b <= xmax_a and (ymin_a < ymax_b <= ymax_a or ymin_a <= ymin_b < ymax_a):
+        if_intersect = True
+    elif xmin_a <= xmin_b < xmax_a and (ymin_a < ymax_b <= ymax_a or ymin_a <= ymin_b < ymax_a):
+        if_intersect = True
+    elif xmin_b < xmax_a <= xmax_b and (ymin_b < ymax_a <= ymax_b or ymin_b <= ymin_a < ymax_b):
+        if_intersect = True
+    elif xmin_b <= xmin_a < xmax_b and (ymin_b < ymax_a <= ymax_b or ymin_b <= ymin_a < ymax_b):
+        if_intersect = True
+    else:
+        return False
+    if if_intersect == True:
+        x_sorted_list = sorted([xmin_a, xmax_a, xmin_b, xmax_b])
+        y_sorted_list = sorted([ymin_a, ymax_a, ymin_b, ymax_b])
+        x_intersect_w = x_sorted_list[2] - x_sorted_list[1] 
+        y_intersect_h = y_sorted_list[2] - y_sorted_list[1]
+        area_inter = x_intersect_w * y_intersect_h
+        return area_inter
+# IOU Part 2, get the IOU score
+def IOU(ver1, vertice2):
+    # vertices in four points
+    vertice1 = [ver1[0], ver1[1], ver1[0]+ver1[2], ver1[1]+ver1[3]]
+    area_inter = if_intersection(vertice1[0], vertice1[2], vertice1[1], vertice1[3], vertice2[0], vertice2[2], vertice2[1], vertice2[3])
+    if area_inter:
+        area_1 = ver1[2] * ver1[3] 
+        area_2 = vertice2[4] * vertice2[5] 
+        iou = float(area_inter) / (area_1 + area_2 - area_inter)
+        return iou
+    return False
+</code></pre>
+Finally, we may use the scikit-learn's LinearSVC module for svm training. According to the paper, when fine-tuning the Alexnet, the CNN is baised towards abundancy of data while when training the SVM, the SVM classifier is baised towards small amount of data. Thus, when decideing the IOU threthold for CNN, we define it to be 0.5 to allow more data to be marked as positive. When training the SVM, as we don't need that much positive cases, we restrict the threthold to be 0.3 to reduce the learning amount.<br>
+At classification time, we train a cascade of SVM classifiers, which one SVM representing one class of object. The code can be obtained at [here](https://github.com/edwardbi/DeepLearningModels/tree/master/RCNN).
+
 
